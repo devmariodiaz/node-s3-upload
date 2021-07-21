@@ -1,11 +1,18 @@
 const fs = require('fs');
 const AWS = require("aws-sdk");
+const { start, app } = require('./middleware/server');
+
 require('dotenv').config();
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.S3_ACCESS_KEY_ID,
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
-})
+});
+
+const port = process.env.SERVER_PORT;
+
+start(port);
+
 
 const uploadFile = fileName => {
     fs.readFile(fileName, (err, data) => {
@@ -22,7 +29,7 @@ const uploadFile = fileName => {
 
             console.log(result);
             console.log(`File uploated successfully at ${result.Location}`);
-        })
+        });
     });
 }
 
